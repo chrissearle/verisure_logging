@@ -57,7 +57,7 @@ const fetchData = () => {
                     logger.info({
                         module: doorWindow.area,
                         title: doorWindow.area,
-                        status: doorWindow.state,
+                        state: doorWindow.state,
                         timestamp: doorWindow.reportTime,
                         tags: ['verisure', 'door_or_window']
                     })
@@ -67,7 +67,7 @@ const fetchData = () => {
                     logger.info({
                         module: plug.area,
                         title: plug.area,
-                        status: plug.currentState,
+                        state: plug.currentState,
                         tags: ['verisure', 'smart_plug']
                     })
                 })
