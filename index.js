@@ -38,7 +38,7 @@ const logger = new Logger({
     transports: transportList
 })
 
-const validDuration = moment.duration({'hours' : 10})
+const validDuration = moment.duration({'minutes' : 10})
 
 const lastSeenValid = (now, lastSeen) => {
     return moment(now).subtract(validDuration).isBefore(moment(lastSeen))
