@@ -3,6 +3,7 @@ import minimist from 'minimist'
 import {Logger, transports} from 'winston'
 import 'winston-logstash'
 import {CronJob} from 'cron'
+import moment from 'moment';
 
 import config from './secrets'
 
@@ -36,6 +37,12 @@ if (config.loggers.logstash) {
 const logger = new Logger({
     transports: transportList
 })
+
+const validDuration = moment.duration({'minutes' : 10})
+
+const lastSeenValid = (now, lastSeen) => {
+    return moment(now).subtract(validDuration).isBefore(moment(lastSeen))
+}
 
 const fetchData = () => {
     verisure.auth(config.auth.username, config.auth.password, function (err, token) {
@@ -72,23 +79,27 @@ const fetchData = () => {
                     })
                 })
 
+                const now = Date.now()
+
                 overview.climateValues.forEach((climate) => {
-                    const data = {
-                        module: climate.deviceArea,
-                        title: climate.deviceArea,
-                        timestamp: climate.time,
-                        tags: ['verisure', 'climate', climate.deviceType]
-                    }
+                    if (lastSeenValid(now, climate.time)) {
+                        const data = {
+                            module: climate.deviceArea,
+                            title: climate.deviceArea,
+                            timestamp: climate.time,
+                            tags: ['verisure', 'climate', climate.deviceType]
+                        }
 
-                    if (climate.temperature) {
-                        data['temperature'] = climate.temperature
-                    }
+                        if (climate.temperature) {
+                            data['temperature'] = climate.temperature
+                        }
 
-                    if (climate.humidity) {
-                        data['humidity'] = climate.humidity
-                    }
+                        if (climate.humidity) {
+                            data['humidity'] = climate.humidity
+                        }
 
-                    logger.info(data)
+                        logger.info(data)
+                    }
                 })
             })
         })
