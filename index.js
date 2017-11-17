@@ -3,7 +3,7 @@ import minimist from 'minimist'
 import {Logger, transports} from 'winston'
 import 'winston-logstash'
 import {CronJob} from 'cron'
-import moment from 'moment';
+import moment from 'moment'
 
 import config from './secrets'
 
