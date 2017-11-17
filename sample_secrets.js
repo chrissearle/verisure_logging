@@ -14,5 +14,12 @@ export default {
         'logstash': false,
         'file': false,
         'console': true
+    },
+    'sensors': {
+        'SMOKE2': 'Smoke Detector',
+        'VOICEBOX1': 'Voice Box',
+        'SIREN1': 'Siren',
+        'PIR2': 'Motion Detector'
     }
+
 }

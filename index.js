@@ -38,7 +38,7 @@ const logger = new Logger({
     transports: transportList
 })
 
-const validDuration = moment.duration({'minutes' : 10})
+const validDuration = moment.duration({'hours' : 10})
 
 const lastSeenValid = (now, lastSeen) => {
     return moment(now).subtract(validDuration).isBefore(moment(lastSeen))
@@ -83,11 +83,13 @@ const fetchData = () => {
 
                 overview.climateValues.forEach((climate) => {
                     if (lastSeenValid(now, climate.time)) {
+                        const sensorName = config.sensors[climate.deviceType]
+
                         const data = {
                             module: climate.deviceArea,
-                            title: climate.deviceArea,
+                            title: `${climate.deviceArea} ${sensorName}`,
                             timestamp: climate.time,
-                            tags: ['verisure', 'climate', climate.deviceType]
+                            tags: ['verisure', 'climate', climate.deviceType, sensorName]
                         }
 
                         if (climate.temperature) {
